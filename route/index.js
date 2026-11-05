@@ -11,8 +11,14 @@ function addRoutes(app) {
         { id: 3, color: "green", sweet: true, monkeyId: null },
         { id: 4, color: "green", sweet: false, monkeyId: null }
     ];
-    let globalMonkeyId = monkeys.length + 1;
-    let globalBananaId = bananas.length + 1;
+   
+    const objrep = {
+        monkeys,
+        nextid:4,
+        bananas,
+        nextid:5
+
+    };
 
     const getMonkeys = (req, res, next) => {
     console.table(monkeys);
