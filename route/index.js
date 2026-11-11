@@ -1,11 +1,11 @@
 const getMonkeysMW = require('../middleware/monkey/getMonkeys');
-const getMonkeyIndexMW = require('../middleware/monkey/getMonkeyIndex');
+const getMonkeyMW = require('../middleware/monkey/getMonkey');
 const createMonkeyMW = require('../middleware/monkey/createMonkey');
 const updateMonkeyMW = require('../middleware/monkey/updateMonkey');
 const deleteMonkeyMW = require('../middleware/monkey/deleteMonkey');
 const deleteMonkeyBananasMW = require('../middleware/monkey/deleteMonkeyBananas');
 const getBananasMW = require('../middleware/banana/getBananas');
-const getBananaIndexMW = require('../middleware/banana/getBananaIndex');
+const getBananaMW = require('../middleware/banana/getBanana');
 const createBananaMW = require('../middleware/banana/createBanana');
 const updateBananaMW = require('../middleware/banana/updateBanana');
 const deleteBananaMW = require('../middleware/banana/deleteBanana');
@@ -29,33 +29,41 @@ function addRoutes(app) {
  nextBananaId: bananas.length + 1
  };
  app.get('/monkey',
- getMonkeysMW(objRep));
- app.post('/monkey',
- createMonkeyMW(objRep));
+ getMonkeysMW(objRep),
+ (req, res, next) => res.status(200).json(res.locals.monkeys));
  app.get('/monkey/:id',
- 
- (req, res, next) => res.status(200).json(monkeys[res.locals.monkeyIndex]));
+ getMonkeyMW(objRep),
+ (req, res, next) => res.status(200).json(res.locals.monkey));
+ app.post('/monkey',
+ createMonkeyMW(objRep),
+ (req, res, next) => res.status(201).json(res.locals.monkey));
  app.patch('/monkey/:id',
- getMonkeyIndexMW(objRep),
- updateMonkeyMW(objRep));
+ getMonkeyMW(objRep),
+ updateMonkeyMW(objRep),
+ (req, res, next) => res.status(200).json(res.locals.monkey));
  app.delete('/monkey/:id',
- getMonkey(objRep),
+ getMonkeyMW(objRep),
  deleteMonkeyBananasMW(objRep),
- deleteMonkeyMW(objRep));
+ deleteMonkeyMW(objRep),
+ (req, res, next) => res.status(200).json(res.locals.monkey));
  app.get('/banana',
- getBananasMW(objRep));
+ getBananasMW(objRep),
+ (req, res, next) => res.status(200).json(res.locals.bananas));
+ app.get('/banana/:id',
+ getBananaMW(objRep),
+ (req, res, next) => res.status(200).json(res.locals.banana));
  app.post('/banana',
  checkMonkeyIdMW(objRep),
- createBananaMW(objRep));
- app.get('/banana/:id',
- 
- (req, res, next) => res.status(200).json(bananas[res.locals.bananaIndex]));
+ createBananaMW(objRep),
+ (req, res, next) => res.status(201).json(res.locals.banana));
  app.patch('/banana/:id',
- getBananaIndexMW(objRep),
+ getBananaMW(objRep),
  checkMonkeyIdMW(objRep),
- updateBananaMW(objRep));
+ updateBananaMW(objRep),
+ (req, res, next) => res.status(200).json(res.locals.banana));
  app.delete('/banana/:id',
- getBananaIndexMW(objRep),
- deleteBananaMW(objRep));
+ getBananaMW(objRep),
+ deleteBananaMW(objRep),
+ (req, res, next) => res.status(200).json(res.locals.banana));
 }
-module.exports = addRoutes;
+module.exports = addRoutes

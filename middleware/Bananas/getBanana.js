@@ -1,18 +1,12 @@
 module.exports = (objRep) => {
  const { bananas } = objRep;
  return (req, res, next) => {
- const bananasIdAsNumber = parseInt(req.params.id, 10);
- let foundId = -1;
- for (let i = 0; i < books.length; i++) {
- if (bananas[i].id === bananasIdAsNumber) {
- foundId = i;
- break;
+ const bananaIdAsNumber = parseInt(req.params.id, 10);
+ const banana = bananas.find(b => b.id === bananaIdAsNumber);
+ if (!banana) {
+ return res.status(404).json({ error: `Banana not found with id: ${req.params.id}` });
  }
- }
- if (foundId === -1) {
- return res.status(404).json({ error: `Book not found with id: ${req.params.id}` });
- }
- res.locals.bookId = foundId;
+ res.locals.banana = banana;
  return next();
  };
 };

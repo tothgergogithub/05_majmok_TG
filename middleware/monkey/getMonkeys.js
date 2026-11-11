@@ -4,6 +4,5 @@ module.exports = (objRep) => {
  console.table(monkeys);
  res.locals.monkeys = monkeys;
  return next();
- 
  };
 };
