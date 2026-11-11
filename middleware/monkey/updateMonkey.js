@@ -1,19 +1,20 @@
-//   id: 1,
-//         name: 'Joe',
-//         sex: 'male',
-//         species: 'gibbon'
 module.exports = (objRep) => {
- const { monkeys } = objRep;
  return (req, res, next) => {
+ if (typeof req.body.name === 'undefined' &&
+ typeof req.body.sex === 'undefined' &&
+ typeof req.body.species === 'undefined') {
+ return res.status(400).json({ error: 'Missing name, sex or species' });
+ }
+ const monkey = res.locals.monkey;
  if (typeof req.body.name !== 'undefined') {
- monkeys[res.locals.monkeysId].title = req.body.name;
+ monkey.name = req.body.name;
  }
  if (typeof req.body.sex !== 'undefined') {
- monkeys[res.locals.monkeysId].author = req.body.author;
+ monkey.sex = req.body.sex;
  }
- if ((typeof req.body.name === 'undefined') && (typeof req.body.sex === 'undefined') && (typeof req.body.species === 'undefined')) {
- return res.status(400).json({ error: 'Missing title or author' });
+ if (typeof req.body.species !== 'undefined') {
+ monkey.species = req.body.species;
  }
- return res.status(201).json(books[res.locals.bookId]);
+ return next();
  };
 };
